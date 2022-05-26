@@ -1,2 +1,1 @@
-# SLIMple
-Python Plugin, that makes commands simpler!
+# [Download latest Version of slimple](https://github.com/stngo/SLIMple/releases/latest/slimple.py)
