@@ -33,7 +33,7 @@ class info:
     def name():
         return "SLIMple"
     def version():
-        return 0.1.1
+        return "0.1.1"
     def creator():
         return "dream4sy"
     def link():
