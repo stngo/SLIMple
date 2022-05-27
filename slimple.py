@@ -1,9 +1,8 @@
 '''
 SLIMple, made by stngo/dream4sy with <3 in Germany!
 Makes complex commands simple to use!
-only works on windows, because msvcrt and command "clear()"
-
-~ v.0.1.2
+only works on WINDOWS!
+~ v.0.2.0
 '''
 
 
@@ -17,6 +16,9 @@ import requests
 import zipfile as zf
 
 class clr:
+    '''
+    Access to Colors in Terminal
+    '''
     black = "\u001b[30m"
     red = "\u001b[31m"
     green = "\u001b[32m"
@@ -30,6 +32,9 @@ class clr:
 
 
 class info:
+    '''
+    Get infos about this plugin
+    '''
     def name():
         '''
         Get THIS plugin name
@@ -39,7 +44,7 @@ class info:
         '''
         Get THIS plugin version
         '''
-        return "0.1.2"
+        return "0.2.0"
     def creator():
         '''
         Get THIS plugin creator
@@ -65,6 +70,9 @@ def next_line(NUMBER):
         print()
 
 class os:
+    '''
+    Access to OS commands
+    '''
     def clear():
         '''
         Clears the Terminal (Only Windows Mechanic)
@@ -86,7 +94,7 @@ class os:
         return mv.getch()
     class window:
         '''
-        Acess to window features
+        Access to window features
         '''
         def title(TITLE_OF_WINDOW):
             '''
@@ -95,6 +103,9 @@ class os:
             cty.windll.kernel32.SetConsoleTitleW(TITLE_OF_WINDOW)
 
 class var:
+    '''
+    Access to Variable commands
+    '''
     class check:
         def IfInt(VariableToCheck):
             '''
@@ -160,6 +171,9 @@ class var:
 
 
 class file:
+    '''
+    Access to file commands
+    '''
     def read(FILENAME):
         '''
         Reads a file
@@ -281,7 +295,7 @@ class file:
 
 class web:
     '''
-    Acess to the web with your program
+    Access to the web with your program
     '''
     def openLink(link):
         '''
