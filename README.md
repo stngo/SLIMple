@@ -2,5 +2,5 @@
 
 # Missing PyModules? [REQUIREMENTS](https://github.com/stngo/SLIMple/blob/main/SourceCode_Requirements.md)
 
-### Makes complex commands simple to use!
+### Makes complex commands simple to use! [Like a all-in-one plugin]
 **only works on WINDOWS, because `msvcrt` and command *`clear()`***
