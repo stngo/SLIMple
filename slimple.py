@@ -5,16 +5,11 @@ only works on WINDOWS!
 ~ v.0.2.0
 '''
 
-
-
-from io import StringIO
 import json
 from os import system
 import msvcrt as mv
 import ctypes as cty
-from typing import Any
 import webbrowser
-from pip import main
 import requests
 import zipfile as zf
 from cryptography.fernet import Fernet
@@ -152,7 +147,7 @@ class var:
                 slimple.var.crypt.default(KEY, VARIABLE, DECODE=False).encrypt() -> encrpyted variable as output (decoded or not)
             '''
 
-            def __init__(self, KEY=int, VARIABLE=Any, DECODE=False):
+            def __init__(self, KEY=int, VARIABLE='', DECODE=False):
                 self.key = KEY
                 self.var = VARIABLE
                 self.dec = DECODE
@@ -337,7 +332,7 @@ class file:
                 slimple.var.crypt.default(KEY, VARIABLE, DECODE=False).encrypt() -> encrpyted variable as output (decoded or not)
             '''
 
-            def __init__(self, KEY=int, FILE=Any, DECODE=False):
+            def __init__(self, KEY=int, FILE='', DECODE=False):
                 self.key = KEY
                 self.file = FILE
                 self.dec = DECODE
