@@ -7,13 +7,17 @@ only works on WINDOWS!
 
 
 
+from io import StringIO
 import json
 from os import system
 import msvcrt as mv
 import ctypes as cty
+from typing import Any
 import webbrowser
+from pip import main
 import requests
 import zipfile as zf
+from cryptography.fernet import Fernet
 
 class clr:
     '''
@@ -134,38 +138,104 @@ class var:
 
         return VariableToSplit.split(PREFIX_FOR_SPLIT)
     
-
-    def encrypt(VariableToCrypt, KEY):
+    class crypt:
         '''
-        Encrypts variable with a key between 1 and 255 (remember key to decrypt) for security.
+        Access to en- and decryption on Variables!
         '''
-        data = VariableToCrypt
+        class default:
+            '''
+            Use default en- and decryption. (a key, 1 up to 255)
 
-        data = bytearray(data)
-        #print(' \n DEBUG:')
-        for index, value in enumerate(data):
-            #print(f"index: {index} value: {value}")
-            data[index] = value ^ KEY
+            How to use:
 
-        #print(' ')
-        #print(f' \nDATA:\n{data}\n')
-        return data
+            Template command:
+                slimple.var.crypt.default(KEY, VARIABLE, DECODE=False).encrypt() -> encrpyted variable as output (decoded or not)
+            '''
 
-    def decrypt(VariableToCrypt, KEY):
-        '''
-        Decrypts a file with a remembered key to read variable.
-        '''
-        data = VariableToCrypt
+            def __init__(self, KEY=int, VARIABLE=Any, DECODE=False):
+                self.key = KEY
+                self.var = VARIABLE
+                self.dec = DECODE
 
-        data = bytearray(data)
-        #print(' \n DEBUG:')
-        for index, value in enumerate(data):
-            #print(f"index: {index} value: {value}")
-            data[index] = value ^ KEY
-        
-        #print(' ')
-        #print(f' \nDATA:\n{data}\n')
-        return data
+            def encrypt(self):
+                '''
+                Encrypts variable (remember key to decrypt). Useful for security.
+
+                [BYTEARRAY NOT WORK, ONLY INT AND STR]
+                '''
+                maindata = self.var
+                maindata = bytes(maindata, 'utf-8')
+
+                data = bytearray(maindata)
+                #print(' \n DEBUG:')
+                for index, value in enumerate(data):
+                    #print(f"index: {index} value: {value}")
+                    data[index] = int(value) ^ int(self.key)
+
+                #print(' ')
+                #print(f' \nDATA:\n{data}\n')
+
+                if self.dec:
+                    return data.decode('utf-8')
+                else:
+                    return data
+
+            def decrypt(self):
+                '''
+                Decrypts a file with a remembered key to read variable.
+                
+                [NEEDS BYTEARRAY -> not decoded encrypted variable]
+                '''
+                maindata = self.var
+                #maindata = bytes(maindata, 'utf-8')
+
+                data = bytearray(maindata)
+                #print(' \n DEBUG:')
+                for index, value in enumerate(data):
+                    #print(f"index: {index} value: {value}")
+                    data[index] = int(value) ^ int(self.key)
+                
+                #print(' ')
+                #print(f' \nDATA:\n{data}\n')
+                if self.dec:
+                    return data.decode('utf-8')
+                else:
+                    return data
+
+        class Fernet:
+            '''
+            More security encryption using a longer and harder key!
+
+            How to use:
+
+            Template command:
+             slimple.var.crypt.Fernet(FERNET_KEY, VARIABLE).encrypt() -> encrpyted variable as output
+              [VARIABLE MUST BE BYTES, OR IT WILL NOT WORK]
+            Generate key:  key = slimple.file.crypt.Fernet()._generate()
+            '''
+
+            def __init__(self, FERNET_KEY=None, VARIABLE=None):
+                self.key = FERNET_KEY
+                self.var = VARIABLE
+
+                self.error_notset = "Error: No variable and/or key set!"
+
+            def _generate(x=None):
+                '''
+                Generates Fernet Key
+                '''
+                return Fernet.generate_key()
+            def encrypt(self):
+                if self.key == None or self.var == None:
+                    return self.error_notset
+                var = Fernet(self.key).encrypt(self.var)
+                return var
+            def decrypt(self):
+                if self.key == None or self.var == None:
+                    return self.error_notset
+                var = Fernet(self.key).decrypt(self.var)
+                return var
+
 
 
 
@@ -253,45 +323,110 @@ class file:
 
 
 
-    def encrypt(FILENAME, KEY, NEW_FILENAME='no_new_filename.txt', LOCATION='', PREFIXFILE='', SUFFIXFILE=''):
+    class crypt:
         '''
-        Encrypts a file with a key between 1 and 255 (remember key to decrypt) for security.
+        Access to en- and decryption on Variables!
         '''
-        file = open(FILENAME, "rb")
-        data = file.read()
-        file.close()
+        class default:
+            '''
+            Use default en- and decryption. (a key, 1 up to 255)
 
-        data = bytearray(data)
-        #print(' \n DEBUG:')
-        for index, value in enumerate(data):
-            #print(f"index: {index} value: {value}")
-            data[index] = value ^ KEY
+            How to use:
 
-        #print(' ')
-        file = open(LOCATION + PREFIXFILE + NEW_FILENAME + SUFFIXFILE, "wb")
-        #print(f' \nDATA:\n{data}\n')
-        file.write(data)
-        file.close()
+            Template command:
+                slimple.var.crypt.default(KEY, VARIABLE, DECODE=False).encrypt() -> encrpyted variable as output (decoded or not)
+            '''
 
-    def decrypt(FILENAME, KEY, NEW_FILENAME='no_new_filename.txt', LOCATION='', PREFIXFILE='', SUFFIXFILE=''):
-        '''
-        Decrypts a file with a remembered key to read encrypted file.
-        '''
-        file = open(FILENAME, "rb")
-        data = file.read()
-        file.close()
+            def __init__(self, KEY=int, FILE=Any, DECODE=False):
+                self.key = KEY
+                self.file = FILE
+                self.dec = DECODE
 
-        data = bytearray(data)
-        #print(' \n DEBUG:')
-        for index, value in enumerate(data):
-            #print(f"index: {index} value: {value}")
-            data[index] = value ^ KEY
-        
-        #print(' ')
-        file = open(LOCATION + PREFIXFILE + NEW_FILENAME + SUFFIXFILE, "wb")
-        #print(f' \nDATA:\n{data}\n')
-        file.write(data)
-        file.close()
+            def encrypt(self):
+                '''
+                Encrypts file (remember key to decrypt). Useful for security.
+                '''
+                file = open(self.file, "rb")
+                data = file.read()
+                file.close()
+
+                data = bytearray(data)
+                #print(' \n DEBUG:')
+                for index, value in enumerate(data):
+                    #print(f"index: {index} value: {value}")
+                    data[index] = int(value) ^ int(self.key)
+
+                #print(' ')
+                #print(f' \nDATA:\n{data}\n')
+
+                if self.dec:
+                    open(self.file, 'wb').write(data.decode('utf-8'))
+                else:
+                    open(self.file, 'wb').write(data)
+
+            def decrypt(self):
+                '''
+                Decrypts a file with a remembered key to read variable.
+                
+                [NEEDS BYTEARRAY -> not decoded encrypted file]
+                '''
+                file = open(self.file, "rb")
+                data = file.read()
+                file.close()
+                #maindata = bytes(maindata, 'utf-8')
+
+                data = bytearray(data)
+                #print(' \n DEBUG:')
+                for index, value in enumerate(data):
+                    #print(f"index: {index} value: {value}")
+                    data[index] = int(value) ^ int(self.key)
+                
+                #print(' ')
+                #print(f' \nDATA:\n{data}\n')
+                if self.dec:
+                    open(self.file, 'wb').write(data.decode('utf-8'))
+                else:
+                    open(self.file, 'wb').write(data)
+
+        class Fernet:
+            '''
+            More security encryption using a longer and harder key!
+
+            How to use:
+
+            Template command:
+             slimple.file.crypt.Fernet(FERNET_KEY, VARIABLE).encrypt() -> encrpyted file [replaced]
+            Generate key:  key = slimple.file.crypt.Fernet()._generate()
+            '''
+
+            def __init__(self, FERNET_KEY=None, FILE=None):
+                self.key = FERNET_KEY
+                self.file = FILE
+
+                self.error_notset = "Error: No file and/or key set!"
+
+            def _generate(x=None):
+                '''
+                Generates Fernet Key
+                '''
+                return Fernet.generate_key()
+            def encrypt(self):
+                if self.key == None or self.file == None:
+                    return self.error_notset
+                
+                filedata = open(self.file, 'rb').read()
+                data = Fernet(self.key).encrypt(filedata)
+
+                open(self.file, 'wb').write(data)
+
+            def decrypt(self):
+                if self.key == None or self.file == None:
+                    return self.error_notset
+
+                filedata = open(self.file, 'rb').read()
+                data = Fernet(self.key).decrypt(filedata)
+
+                open(self.file, 'wb').write(data)
 
 class web:
     '''
