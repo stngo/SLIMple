@@ -1,7 +1,7 @@
 '''
 SLIMple, made by stngo/dream4sy with <3 in Germany!
 Makes complex commands simple to use!
-~ v.0.3.0
+~ v.0.3.1
 '''
 
 import json
@@ -42,7 +42,7 @@ class info:
         '''
         Get THIS plugin version
         '''
-        return "0.3.0"
+        return "0.3.1"
     def creator():
         '''
         Get THIS plugin creator
