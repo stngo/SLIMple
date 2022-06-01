@@ -7,12 +7,12 @@ only works on WINDOWS!
 
 import json
 from os import system
-import msvcrt as mv
 import ctypes as cty
 import webbrowser
 import requests
 import zipfile as zf
 from cryptography.fernet import Fernet
+import getch, platform
 
 class clr:
     '''
@@ -74,23 +74,33 @@ class os:
     '''
     def clear():
         '''
-        Clears the Terminal (Only Windows Mechanic)
+        Clears the Terminal
         '''
-        system('cls')
-    def one_input():
+        
+        syst=platform.system
+        
+        if syst == 'Windows':
+            system('cls')
+        else: system('clear')
+    def check_os():
+        '''
+        Returning the name of the operation system
+        '''
+        return platform.system()
+    def getch():
         '''
         Let the user press only ONE key to continue and/or remember the keypress
 
         Example:
 
             Code:
-                key = slimple.os.one_input()
+                key = slimple.os.getch()
                 ; print(key)
 
             Terminal:
-                *script waiting for input* | "I press q" | *script continues* | Terminal: q
+                *script waiting for input* | "I press q" | *script continues* | Terminal: q [NOT BYTE]
         '''
-        return mv.getch()
+        return getch.getch()
     class window:
         '''
         Access to window features
