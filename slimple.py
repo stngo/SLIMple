@@ -1,7 +1,6 @@
 '''
 SLIMple, made by stngo/dream4sy with <3 in Germany!
 Makes complex commands simple to use!
-only works on WINDOWS!
 ~ v.0.3.0
 '''
 
