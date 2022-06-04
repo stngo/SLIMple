@@ -1,7 +1,7 @@
 '''
 SLIMple, made by stngo/dream4sy with <3 in Germany!
 Makes complex commands simple to use!
-~ v.0.3.1
+~ v.0.3.2
 '''
 
 import json
@@ -11,7 +11,8 @@ import webbrowser
 import requests
 import zipfile as zf
 from cryptography.fernet import Fernet
-import getch, platform
+from easy_getch import getch
+import platform
 
 class clr:
     '''
@@ -42,7 +43,7 @@ class info:
         '''
         Get THIS plugin version
         '''
-        return "0.3.1"
+        return "0.3.2"
     def creator():
         '''
         Get THIS plugin creator
@@ -75,9 +76,9 @@ class os:
         '''
         Clears the Terminal
         '''
-        
-        syst=platform.system
-        
+
+        syst=platform.system()
+
         if syst == 'Windows':
             system('cls')
         else: system('clear')
@@ -99,7 +100,7 @@ class os:
             Terminal:
                 *script waiting for input* | "I press q" | *script continues* | Terminal: q [NOT BYTE]
         '''
-        return getch.getch()
+        return getch()
     class window:
         '''
         Access to window features
@@ -141,7 +142,7 @@ class var:
         '''
 
         return VariableToSplit.split(PREFIX_FOR_SPLIT)
-    
+
     class crypt:
         '''
         Access to en- and decryption on Variables!
@@ -187,7 +188,7 @@ class var:
             def decrypt(self):
                 '''
                 Decrypts a file with a remembered key to read variable.
-                
+
                 [NEEDS BYTEARRAY -> not decoded encrypted variable]
                 '''
                 maindata = self.var
@@ -198,7 +199,7 @@ class var:
                 for index, value in enumerate(data):
                     #print(f"index: {index} value: {value}")
                     data[index] = int(value) ^ int(self.key)
-                
+
                 #print(' ')
                 #print(f' \nDATA:\n{data}\n')
                 if self.dec:
@@ -264,7 +265,7 @@ class file:
 
         Example how to use:
             textfile = slimple.file.read('test.txt')
-            
+
             print(textfile)  # prints out the filecontent
         '''
         return open(FILENAME, 'rb').read()
@@ -274,7 +275,7 @@ class file:
 
         Example how to use:
             jsonfile = slimple.file.read('test.json')
-            
+
             print(jsonfile['AnJsonEntry'])  # prints out the json entry
 
         '''
@@ -313,7 +314,7 @@ class file:
         '''
         with zf.ZipFile(ZIPFILE) as mz:
             mz.extractall(PATH)
-    
+
     def split(FILENAME, PREFIX_FOR_SPLIT='|'):
         '''
         Splits the File-Content to a list, Example:
@@ -371,7 +372,7 @@ class file:
             def decrypt(self):
                 '''
                 Decrypts a file with a remembered key to read variable.
-                
+
                 [NEEDS BYTEARRAY -> not decoded encrypted file]
                 '''
                 file = open(self.file, "rb")
@@ -384,7 +385,7 @@ class file:
                 for index, value in enumerate(data):
                     #print(f"index: {index} value: {value}")
                     data[index] = int(value) ^ int(self.key)
-                
+
                 #print(' ')
                 #print(f' \nDATA:\n{data}\n')
                 if self.dec:
@@ -417,7 +418,7 @@ class file:
             def encrypt(self):
                 if self.key == None or self.file == None:
                     return self.error_notset
-                
+
                 filedata = open(self.file, 'rb').read()
                 data = Fernet(self.key).encrypt(filedata)
 
