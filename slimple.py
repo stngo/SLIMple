@@ -5,7 +5,7 @@ Makes complex commands simple to use!
 '''
 
 import json
-from os import system
+from os import system, path, mkdir
 import ctypes as cty
 import webbrowser
 import requests
@@ -13,6 +13,10 @@ import zipfile as zf
 from cryptography.fernet import Fernet
 from easy_getch import getch
 import platform
+from datetime import datetime
+
+TIME_date = datetime.today()
+TIME_datereg = datetime.today().strftime ('%m-%d-%Y %H_%M_%S')
 
 class clr:
     '''
@@ -432,6 +436,40 @@ class file:
                 data = Fernet(self.key).decrypt(filedata)
 
                 open(self.file, 'wb').write(data)
+
+    class logHandler:
+        '''
+        Create logs easily
+        '''
+
+        def createFile(logname, logFolder='logs/'):
+            '''
+            Creates a log file [Recommended, before writeLine, do not create a log file without THIS command]
+            '''
+
+            if path.exists(logFolder):
+                pass
+            else:
+                mkdir(logFolder)
+                #print('log folder created successfully')
+
+            with open(logFolder+logname, "w") as logFile:
+                logFile.write('Log File created %s' % TIME_date)
+
+        def writeLine(logname, text, prefixTime='<', suffixTime='> -> ', nonlines=1):
+            '''
+            Writes a line into log [Recommended, do not use default write]
+            '''
+            nonl = '\n'
+
+            if nonlines != 0:
+                for i in range(nonlines):
+                    nonl += '\n'
+
+            with open('logs/'+logname, 'r') as logFile:
+                d = logFile.read()
+            with open('logs/'+logname, 'w') as logFile:
+                logFile.write(d +nonl+ prefixTime+str(datetime.today())+suffixTime + text)
 
 class web:
     '''
